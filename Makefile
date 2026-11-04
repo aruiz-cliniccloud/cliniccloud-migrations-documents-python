@@ -29,7 +29,7 @@ help:
 	@echo "  ClinicCloud Migration Document Manager"
 	@echo "  ───────────────────────────────────────"
 	@echo "  make install    Create virtualenv and install dependencies"
-	@echo "  make dev        Start the development server (http://localhost:5000)"
+	@echo "  make dev        Start the development server (http://localhost:8080)"
 	@echo "  make test       Run the test suite"
 	@echo "  make coverage   Run tests and show coverage report"
 	@echo "  make clean      Remove cache, build and coverage files"
