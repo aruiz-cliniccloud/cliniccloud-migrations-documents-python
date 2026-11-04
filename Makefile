@@ -3,6 +3,9 @@
 #  Requires: make  (Windows: choco install make)
 # ──────────────────────────────────────────────
 
+# Read PORT from .env (fallback: 8080)
+PORT := $(shell grep -E '^PORT=' .env 2>/dev/null | cut -d= -f2 | tr -d ' ' || echo 8080)
+
 # Detect OS → correct venv paths
 ifeq ($(OS),Windows_NT)
 	PYTHON     = python
@@ -21,7 +24,7 @@ else
 endif
 
 .DEFAULT_GOAL := help
-.PHONY: help install venv dev test coverage clean reset
+.PHONY: help install venv dev stop restart status test coverage clean reset
 
 # ── Help ──────────────────────────────────────
 help:
@@ -29,7 +32,10 @@ help:
 	@echo "  ClinicCloud Migration Document Manager"
 	@echo "  ───────────────────────────────────────"
 	@echo "  make install    Create virtualenv and install dependencies"
-	@echo "  make dev        Start the development server (http://localhost:8080)"
+	@echo "  make dev        Start the development server (http://localhost:$(PORT))"
+	@echo "  make stop       Stop the running server"
+	@echo "  make restart    Stop and restart the server"
+	@echo "  make status     Check if the server is responding"
 	@echo "  make test       Run the test suite"
 	@echo "  make coverage   Run tests and show coverage report"
 	@echo "  make clean      Remove cache, build and coverage files"
@@ -50,6 +56,24 @@ install: venv
 # ── Run ───────────────────────────────────────
 dev:
 	$(VENV_PY) run.py
+
+stop:
+	@if lsof -ti :$(PORT) > /dev/null 2>&1; then \
+		lsof -ti :$(PORT) | xargs kill -9; \
+		echo "  ✓ Server stopped (port $(PORT))."; \
+	else \
+		echo "  — No server running on port $(PORT)."; \
+	fi
+
+restart:
+	@$(MAKE) stop
+	@sleep 0.5
+	$(MAKE) dev
+
+status:
+	@curl -sf http://127.0.0.1:$(PORT)/health > /dev/null 2>&1 \
+		&& echo "  ✓ Server is up → http://127.0.0.1:$(PORT)" \
+		|| echo "  ✗ Server not responding on port $(PORT). Run 'make dev' to start."
 
 # ── Test ──────────────────────────────────────
 test:

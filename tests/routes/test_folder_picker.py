@@ -22,3 +22,10 @@ class TestFolderPickerRoute:
             response = client.get("/browse-folder")
         assert response.status_code == 200
         assert response.get_json()["path"] is None
+
+    def test_browse_folder_returns_null_when_dialog_times_out(self, client):
+        from queue import Empty
+        with patch("app.routes.folder_picker._pick_folder", side_effect=TimeoutError):
+            response = client.get("/browse-folder")
+        assert response.status_code == 200
+        assert response.get_json()["path"] is None

@@ -4,6 +4,7 @@ from app.routes.home import home_bp
 from app.routes.listing import listing_bp
 from app.routes.language import language_bp
 from app.routes.folder_picker import folder_picker_bp
+from app.routes.health import health_bp
 from app.services.translator import load_translator, DEFAULT_LANG
 
 
@@ -21,6 +22,7 @@ def create_app(config: dict | None = None) -> Flask:
     app.register_blueprint(listing_bp)
     app.register_blueprint(language_bp)
     app.register_blueprint(folder_picker_bp)
+    app.register_blueprint(health_bp)
 
     @app.context_processor
     def inject_translator():
