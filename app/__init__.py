@@ -1,7 +1,9 @@
 import os
-from flask import Flask
+from flask import Flask, session
 from app.routes.home import home_bp
 from app.routes.listing import listing_bp
+from app.routes.language import language_bp
+from app.services.translator import load_translator, DEFAULT_LANG
 
 
 def create_app(config: dict | None = None) -> Flask:
@@ -16,5 +18,12 @@ def create_app(config: dict | None = None) -> Flask:
 
     app.register_blueprint(home_bp)
     app.register_blueprint(listing_bp)
+    app.register_blueprint(language_bp)
+
+    @app.context_processor
+    def inject_translator():
+        lang = session.get("lang", DEFAULT_LANG)
+        translator = load_translator(lang)
+        return {"t": translator.translate, "lang": lang}
 
     return app

@@ -15,7 +15,7 @@ class TestListingRoute:
     def test_listing_with_valid_empty_directory_shows_empty_state(self, client, tmp_path):
         response = client.get(f"/documents?path={tmp_path}")
         assert response.status_code == 200
-        assert b"no documents" in response.data.lower()
+        assert b'data-testid="empty-state"' in response.data
 
     def test_listing_with_files_shows_document_names(self, client, tmp_path):
         (tmp_path / "migration_v1.sql").write_text("x")

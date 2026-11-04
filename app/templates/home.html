@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Home · ClinicCloud Migrations{% endblock %}
+{% block title %}{{ t("home.title") }} · ClinicCloud{% endblock %}
 
 {% block content %}
 
@@ -10,201 +10,88 @@
     <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
     </svg>
-    3-step workflow
+    {{ t("home.badge") }}
   </span>
-  <h1 class="text-4xl font-bold text-gray-900 leading-tight">
-    Migration Document Manager
-  </h1>
-  <p class="mt-3 text-lg text-gray-500 leading-relaxed">
-    Prepare your ClinicCloud migration files in three simple steps:
-    browse your documents, apply naming conventions, and bundle them into a delivery package.
-  </p>
+  <h1 class="text-4xl font-bold text-gray-900 leading-tight">{{ t("home.title") }}</h1>
+  <p class="mt-3 text-lg text-gray-500 leading-relaxed">{{ t("home.subtitle") }}</p>
 </div>
 
 <!-- ── How it works ── -->
 <div class="mb-12">
-  <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-5">How it works</h2>
+  <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-5">
+    {{ t("home.how_it_works") }}
+  </h2>
   <div class="relative flex flex-col sm:flex-row gap-0">
-
-    <!-- Connector line (desktop) -->
     <div class="hidden sm:block absolute top-6 left-[calc(16.66%+1rem)] right-[calc(16.66%+1rem)] h-px bg-gray-200 z-0"></div>
 
     {% set steps = [
-      ("1", "List your documents",   "Open the input folder and see every file available. Filter by name or extension. Confirm the documents are the ones you need before doing anything else."),
-      ("2", "Rename if needed",       "Apply a consistent naming convention across one or many files at once. Preview the new names before saving — nothing changes until you confirm."),
-      ("3", "Build the package",      "Select the documents you want to deliver and generate a ZIP. A manifest file is included automatically so the recipient knows exactly what's inside.")
+      ("1", t("home.step1.title"), t("home.step1.description")),
+      ("2", t("home.step2.title"), t("home.step2.description")),
+      ("3", t("home.step3.title"), t("home.step3.description"))
     ] %}
-
     {% for number, title, description in steps %}
     <div class="relative z-10 flex-1 flex flex-col items-center text-center px-4">
-      <div class="flex items-center justify-center w-12 h-12 rounded-full border-2
+      <div class="flex items-center justify-center w-12 h-12 rounded-full border-2 font-bold text-sm shadow-sm mb-3
                   {% if number == '1' %}border-blue-500 bg-blue-500 text-white
-                  {% elif number == '2' %}border-gray-300 bg-white text-gray-500
-                  {% else %}border-gray-300 bg-white text-gray-500{% endif %}
-                  font-bold text-sm shadow-sm mb-3">
+                  {% else %}border-gray-300 bg-white text-gray-500{% endif %}">
         {{ number }}
       </div>
       <p class="text-sm font-semibold text-gray-800 mb-1">{{ title }}</p>
       <p class="text-xs text-gray-500 leading-relaxed max-w-[180px]">{{ description }}</p>
     </div>
     {% endfor %}
-
   </div>
 </div>
 
 <!-- ── Feature cards ── -->
-<h2 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-5">Get started</h2>
+<h2 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-5">
+  {{ t("home.get_started") }}
+</h2>
 <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
 
-  <!-- Card: List documents -->
-  <div class="flex flex-col rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden hover:shadow-md hover:border-blue-300 transition group">
-    <div class="px-6 pt-6 pb-5 flex-1">
-      <div class="flex items-center gap-3 mb-4">
-        <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-100 transition">
-          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M7 4H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2h-2M7 4a2 2 0 012-2h6a2 2 0 012 2M7 4h10"/>
-          </svg>
-        </div>
-        <div>
-          <span class="text-xs font-medium text-blue-500 uppercase tracking-wide">Step 1</span>
-          <h3 class="text-base font-semibold text-gray-900 leading-tight">List Documents</h3>
-        </div>
-      </div>
-      <p class="text-sm text-gray-500 mb-4 leading-relaxed">
-        Browse all files in your configured input folder. Filter by name or extension, check sizes and dates,
-        and confirm you have everything you need before proceeding.
-      </p>
-      <ul class="space-y-1.5 text-xs text-gray-500">
-        <li class="flex items-center gap-2">
-          <svg class="w-3.5 h-3.5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-          </svg>
-          Full list with file details
-        </li>
-        <li class="flex items-center gap-2">
-          <svg class="w-3.5 h-3.5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-          </svg>
-          Filter and search documents
-        </li>
-        <li class="flex items-center gap-2">
-          <svg class="w-3.5 h-3.5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-          </svg>
-          Sort by name, date or size
-        </li>
-      </ul>
-    </div>
-    <div class="px-6 pb-5">
-      <a href="/documents"
-         class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 active:bg-blue-800 transition">
-        Browse documents
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-        </svg>
-      </a>
-    </div>
-  </div>
+  {% set cards = [
+    ("/documents", "home.card1", "M9 12h6m-6 4h6M7 4H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2h-2M7 4a2 2 0 012-2h6a2 2 0 012 2M7 4h10"),
+    ("/rename",    "home.card2", "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"),
+    ("/package",   "home.card3", "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10")
+  ] %}
 
-  <!-- Card: Rename documents -->
+  {% for href, key, icon_path in cards %}
   <div class="flex flex-col rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden hover:shadow-md hover:border-blue-300 transition group">
     <div class="px-6 pt-6 pb-5 flex-1">
       <div class="flex items-center gap-3 mb-4">
         <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-100 transition">
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="{{ icon_path }}"/>
           </svg>
         </div>
         <div>
-          <span class="text-xs font-medium text-blue-500 uppercase tracking-wide">Step 2</span>
-          <h3 class="text-base font-semibold text-gray-900 leading-tight">Rename Documents</h3>
+          <span class="text-xs font-medium text-blue-500 uppercase tracking-wide">{{ t(key ~ ".step") }}</span>
+          <h3 class="text-base font-semibold text-gray-900 leading-tight">{{ t(key ~ ".title") }}</h3>
         </div>
       </div>
-      <p class="text-sm text-gray-500 mb-4 leading-relaxed">
-        Apply a consistent naming convention to one or many documents at once.
-        Always preview the new names before confirming — nothing is changed until you approve.
-      </p>
+      <p class="text-sm text-gray-500 mb-4 leading-relaxed">{{ t(key ~ ".description") }}</p>
       <ul class="space-y-1.5 text-xs text-gray-500">
+        {% for i in [1, 2, 3] %}
         <li class="flex items-center gap-2">
           <svg class="w-3.5 h-3.5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
           </svg>
-          Rename one or many at once
+          {{ t(key ~ ".feature" ~ i) }}
         </li>
-        <li class="flex items-center gap-2">
-          <svg class="w-3.5 h-3.5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-          </svg>
-          Preview before/after names
-        </li>
-        <li class="flex items-center gap-2">
-          <svg class="w-3.5 h-3.5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-          </svg>
-          No changes until confirmed
-        </li>
+        {% endfor %}
       </ul>
     </div>
     <div class="px-6 pb-5">
-      <a href="/rename"
+      <a href="{{ href }}"
          class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 active:bg-blue-800 transition">
-        Start renaming
+        {{ t(key ~ ".button") }}
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
         </svg>
       </a>
     </div>
   </div>
-
-  <!-- Card: Package documents -->
-  <div class="flex flex-col rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden hover:shadow-md hover:border-blue-300 transition group">
-    <div class="px-6 pt-6 pb-5 flex-1">
-      <div class="flex items-center gap-3 mb-4">
-        <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-100 transition">
-          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/>
-          </svg>
-        </div>
-        <div>
-          <span class="text-xs font-medium text-blue-500 uppercase tracking-wide">Step 3</span>
-          <h3 class="text-base font-semibold text-gray-900 leading-tight">Package Documents</h3>
-        </div>
-      </div>
-      <p class="text-sm text-gray-500 mb-4 leading-relaxed">
-        Select the documents you want to deliver and generate a ZIP package ready to send.
-        A manifest file is included automatically with the full list of contents.
-      </p>
-      <ul class="space-y-1.5 text-xs text-gray-500">
-        <li class="flex items-center gap-2">
-          <svg class="w-3.5 h-3.5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-          </svg>
-          Select individual documents
-        </li>
-        <li class="flex items-center gap-2">
-          <svg class="w-3.5 h-3.5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-          </svg>
-          ZIP package generated instantly
-        </li>
-        <li class="flex items-center gap-2">
-          <svg class="w-3.5 h-3.5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-          </svg>
-          Manifest included automatically
-        </li>
-      </ul>
-    </div>
-    <div class="px-6 pb-5">
-      <a href="/package"
-         class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 active:bg-blue-800 transition">
-        Build a package
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-        </svg>
-      </a>
-    </div>
-  </div>
+  {% endfor %}
 
 </div>
 
@@ -214,11 +101,13 @@
     <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
   </svg>
   <div>
-    <strong class="font-semibold">Recommended order:</strong>
-    start with <a href="/documents" class="underline hover:text-amber-900">List Documents</a> to verify your input folder,
-    then <a href="/rename" class="underline hover:text-amber-900">Rename</a> if needed,
-    and finally <a href="/package" class="underline hover:text-amber-900">Package</a> to generate your delivery ZIP.
-    You can always skip steps that are not needed.
+    <strong class="font-semibold">{{ t("home.tip.label") }}</strong>
+    {{ t("home.tip.text") }}
+    <a href="/documents" class="underline hover:text-amber-900">{{ t("home.card1.title") }}</a>
+    {{ t("home.tip.then") }}
+    <a href="/rename" class="underline hover:text-amber-900">{{ t("home.card2.title") }}</a>,
+    {{ t("home.tip.end").replace(t("home.card3.title"), "") }}
+    <a href="/package" class="underline hover:text-amber-900">{{ t("home.card3.title") }}</a>.
   </div>
 </div>
 
