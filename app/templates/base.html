@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}ClinicCloud Migrations{% endblock %}</title>
+
+  {% if config.get("TESTING") %}
+    {# No CSS in test environment #}
+  {% elif config.get("FLASK_ENV") == "production" %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  {% else %}
+    <script src="https://cdn.tailwindcss.com"></script>
+  {% endif %}
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen">
+
+  <header class="bg-white border-b border-gray-200 px-6 py-4">
+    <a href="/" class="text-lg font-semibold text-blue-700 hover:text-blue-900">
+      ClinicCloud · Migration Documents
+    </a>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6 py-10">
+    {% block content %}{% endblock %}
+  </main>
+
+</body>
+</html>
