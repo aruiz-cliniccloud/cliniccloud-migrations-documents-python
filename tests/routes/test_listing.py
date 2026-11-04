@@ -28,8 +28,28 @@ class TestListingRoute:
         response = client.get(f"/documents?path={tmp_path}")
         assert b"nested.pdf" in response.data
 
-    def test_listing_shows_document_count(self, client, tmp_path):
+    def test_listing_shows_total_document_count(self, client, tmp_path):
         (tmp_path / "a.pdf").write_text("x")
         (tmp_path / "b.pdf").write_text("x")
         response = client.get(f"/documents?path={tmp_path}")
         assert b"2" in response.data
+
+    def test_listing_shows_only_first_five_documents_by_default(self, client, tmp_path):
+        for i in range(8):
+            (tmp_path / f"file_{i:02d}.pdf").write_text("x")
+        response = client.get(f"/documents?path={tmp_path}")
+        assert b"file_00.pdf" in response.data
+        assert b"file_04.pdf" in response.data
+        assert b"file_05.pdf" not in response.data
+
+    def test_listing_shows_all_documents_when_all_param_is_set(self, client, tmp_path):
+        for i in range(8):
+            (tmp_path / f"file_{i:02d}.pdf").write_text("x")
+        response = client.get(f"/documents?path={tmp_path}&all=1")
+        assert b"file_07.pdf" in response.data
+
+    def test_listing_shows_show_all_link_when_results_are_limited(self, client, tmp_path):
+        for i in range(8):
+            (tmp_path / f"file_{i:02d}.pdf").write_text("x")
+        response = client.get(f"/documents?path={tmp_path}")
+        assert b"all=1" in response.data
