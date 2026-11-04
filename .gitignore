@@ -26,6 +26,10 @@ tailwindcss-linux-x64
 # Compiled CSS (generated, not committed)
 static/css/main.css
 
+# Generated output (Excel exports, logs)
+output/
+logs/
+
 # macOS
 .DS_Store
 
