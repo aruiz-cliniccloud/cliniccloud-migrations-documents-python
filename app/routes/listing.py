@@ -1,6 +1,10 @@
+from datetime import datetime
 from pathlib import Path
-from flask import Blueprint, render_template, request, current_app
+
+from flask import Blueprint, Response, render_template, redirect, request, current_app
+
 from app.services.document_lister import DocumentLister
+from app.services.excel_exporter import generate_excel
 from app.infrastructure.fs_document_repository import FileSystemDocumentRepository
 
 listing_bp = Blueprint("listing", __name__)
@@ -38,3 +42,32 @@ def index():
     return render_template("listing.html", path=path_str, documents=documents,
                            error=None, default_dir=default_dir,
                            total=total, limited=limited)
+
+
+@listing_bp.get("/documents/export")
+def export():
+    default_dir = current_app.config.get("INPUT_DIR", "")
+    path_str = request.args.get("path", default_dir).strip()
+
+    if not path_str:
+        return redirect("/documents")
+
+    directory = Path(path_str)
+    try:
+        all_documents = _lister().list_documents(directory)
+    except ValueError:
+        return redirect(f"/documents?path={path_str}")
+
+    excel_bytes = generate_excel(all_documents, directory)
+
+    output_dir = Path(current_app.config.get("OUTPUT_DIR", "output"))
+    output_dir.mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"documents_{timestamp}.xlsx"
+    (output_dir / filename).write_bytes(excel_bytes)
+
+    return Response(
+        excel_bytes,
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
+    )

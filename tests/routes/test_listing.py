@@ -53,3 +53,62 @@ class TestListingRoute:
             (tmp_path / f"file_{i:02d}.pdf").write_text("x")
         response = client.get(f"/documents?path={tmp_path}")
         assert b"all=1" in response.data
+
+
+class TestExportRoute:
+    def test_export_returns_xlsx_content_type(self, client, tmp_path):
+        (tmp_path / "migration.sql").write_text("x")
+        response = client.get(f"/documents/export?path={tmp_path}")
+        assert response.status_code == 200
+        assert "spreadsheetml" in response.content_type
+
+    def test_export_returns_attachment_header(self, client, tmp_path):
+        (tmp_path / "migration.sql").write_text("x")
+        response = client.get(f"/documents/export?path={tmp_path}")
+        assert "attachment" in response.headers.get("Content-Disposition", "")
+
+    def test_export_redirects_when_no_path_given(self, client):
+        response = client.get("/documents/export")
+        assert response.status_code in (302, 303)
+
+    def test_export_redirects_when_path_does_not_exist(self, client):
+        response = client.get("/documents/export?path=/nonexistent/xyz_abc")
+        assert response.status_code in (302, 303)
+
+    def test_export_xlsx_contains_document_data(self, client, tmp_path):
+        from io import BytesIO
+        import openpyxl
+
+        (tmp_path / "migration.sql").write_text("x")
+        response = client.get(f"/documents/export?path={tmp_path}")
+        wb = openpyxl.load_workbook(BytesIO(response.data))
+        ws = wb.active
+        values = [ws.cell(r, 3).value for r in range(2, ws.max_row + 1)]
+        assert "migration.sql" in values
+
+    def test_export_saves_xlsx_file_to_output_directory(self, app, client, tmp_path):
+        from pathlib import Path
+        (tmp_path / "migration.sql").write_text("x")
+        client.get(f"/documents/export?path={tmp_path}")
+
+        output_dir = Path(app.config["OUTPUT_DIR"])
+        xlsx_files = list(output_dir.glob("*.xlsx"))
+        assert len(xlsx_files) == 1
+
+    def test_export_saved_filename_ends_with_xlsx(self, app, client, tmp_path):
+        from pathlib import Path
+        (tmp_path / "migration.sql").write_text("x")
+        client.get(f"/documents/export?path={tmp_path}")
+
+        output_dir = Path(app.config["OUTPUT_DIR"])
+        saved = list(output_dir.glob("*.xlsx"))[0]
+        assert saved.suffix == ".xlsx"
+
+    def test_export_saved_file_matches_downloaded_content(self, app, client, tmp_path):
+        from pathlib import Path
+        (tmp_path / "migration.sql").write_text("x")
+        response = client.get(f"/documents/export?path={tmp_path}")
+
+        output_dir = Path(app.config["OUTPUT_DIR"])
+        saved = list(output_dir.glob("*.xlsx"))[0]
+        assert saved.read_bytes() == response.data

@@ -81,5 +81,7 @@
   "listing.empty.description": "The folder exists but contains no files. Make sure your migration documents are inside this folder.",
   "listing.initial.title": "Enter a folder path to get started",
   "listing.initial.description": "Type or paste the full path to your documents folder above and click Browse.",
-  "listing.no_filter_results": "No documents match your filter."
+  "listing.no_filter_results": "No documents match your filter.",
+  "listing.export_button": "Download Excel",
+  "listing.export_title": "Export listing to Excel (.xlsx)"
 }
