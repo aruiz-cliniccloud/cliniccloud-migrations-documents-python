@@ -72,3 +72,36 @@ class TestReadManifestCsv:
         rows = read_manifest_csv(csv_path)
         assert len(rows) == 1
         assert rows[0]["extra"] == "data"
+
+    def test_reads_semicolon_delimited_csv(self, tmp_path):
+        csv_path = tmp_path / "manifest.csv"
+        with csv_path.open("w", newline="", encoding="utf-8") as f:
+            f.write("idImport;Ruta\r\n1;file1.pdf\r\n2;file2.pdf\r\n")
+        rows = read_manifest_csv(csv_path)
+        assert len(rows) == 2
+        assert rows[0]["idImport"] == "1"
+        assert rows[0]["Ruta"] == "file1.pdf"
+
+    def test_reads_latin1_encoded_csv(self, tmp_path):
+        csv_path = tmp_path / "manifest.csv"
+        with csv_path.open("w", newline="", encoding="latin-1") as f:
+            f.write("idImport;Ruta\r\n1;carpeta/ficha_José.pdf\r\n")
+        rows = read_manifest_csv(csv_path)
+        assert len(rows) == 1
+        assert "Jos" in rows[0]["Ruta"]
+
+    def test_reads_cp1252_encoded_csv(self, tmp_path):
+        csv_path = tmp_path / "manifest.csv"
+        with csv_path.open("w", newline="", encoding="cp1252") as f:
+            f.write("idImport;Ruta\r\n1049;folder/doc_ñoño.pdf\r\n")
+        rows = read_manifest_csv(csv_path)
+        assert len(rows) == 1
+        assert rows[0]["idImport"] == "1049"
+
+    def test_strips_whitespace_from_column_names(self, tmp_path):
+        csv_path = tmp_path / "manifest.csv"
+        with csv_path.open("w", newline="", encoding="utf-8") as f:
+            f.write(" idImport ; Ruta \r\n1;file.pdf\r\n")
+        rows = read_manifest_csv(csv_path)
+        assert len(rows) == 1
+        assert rows[0]["idImport"] == "1"
