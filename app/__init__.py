@@ -7,6 +7,7 @@ from app.routes.language import language_bp
 from app.routes.folder_picker import folder_picker_bp
 from app.routes.health import health_bp
 from app.routes.rename import rename_bp
+from app.routes.packaging import packaging_bp
 from app.services.translator import load_translator, DEFAULT_LANG
 from app.infrastructure.operation_logger import configure_console_logging, configure_file_logging
 
@@ -34,6 +35,7 @@ def create_app(config: dict | None = None) -> Flask:
     app.register_blueprint(folder_picker_bp)
     app.register_blueprint(health_bp)
     app.register_blueprint(rename_bp)
+    app.register_blueprint(packaging_bp)
 
     @app.context_processor
     def inject_translator():
