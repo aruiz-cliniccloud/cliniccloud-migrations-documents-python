@@ -163,7 +163,14 @@ class TestPackageApply:
         _set_session(client, self._full_session(tmp_path))
         client.post("/package/apply")
         output_base = Path(app.config["OUTPUT_DIR"]) / "paquetes_123"
-        assert (output_base / "manifest_123.csv").exists()
+        manifest_path = output_base / "manifest_123.csv"
+        assert manifest_path.exists()
+        with manifest_path.open(newline="") as f:
+            reader = csv.DictReader(f, delimiter=";")
+            rows = list(reader)
+        assert len(rows) == 1
+        assert rows[0]["idImport"] == "1"
+        assert rows[0]["paquete"] == "paquete_123_01/file.pdf"
 
     def test_apply_creates_zip_file(self, client, app, tmp_path):
         _set_session(client, self._full_session(tmp_path))
