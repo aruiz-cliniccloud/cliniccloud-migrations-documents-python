@@ -14,8 +14,16 @@ class TestWritePackageManifest:
     def test_csv_has_correct_headers(self, tmp_path):
         write_package_manifest(tmp_path, "123", [])
         with (tmp_path / "manifest_123.csv").open(newline="") as f:
-            reader = csv.DictReader(f)
+            reader = csv.DictReader(f, delimiter=";")
             assert reader.fieldnames == ["idImport", "paquete"]
+
+    def test_csv_uses_semicolon_delimiter(self, tmp_path):
+        rows = [{"idImport": "1", "paquete": "paquete_123_01"}]
+        write_package_manifest(tmp_path, "123", rows)
+        with (tmp_path / "manifest_123.csv").open(newline="") as f:
+            first_line = f.readline()
+        assert ";" in first_line
+        assert "," not in first_line
 
     def test_csv_contains_all_rows(self, tmp_path):
         rows = [
@@ -25,7 +33,7 @@ class TestWritePackageManifest:
         ]
         write_package_manifest(tmp_path, "123", rows)
         with (tmp_path / "manifest_123.csv").open(newline="") as f:
-            written = list(csv.DictReader(f))
+            written = list(csv.DictReader(f, delimiter=";"))
         assert len(written) == 3
         assert written[2]["paquete"] == "paquete_123_02"
 
