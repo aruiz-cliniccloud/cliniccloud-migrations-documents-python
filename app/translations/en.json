@@ -86,8 +86,9 @@
   "listing.initial.title": "Enter a folder path to get started",
   "listing.initial.description": "Type or paste the full path to your documents folder above and click Browse.",
   "listing.no_filter_results": "No documents match your filter.",
-  "listing.export_button": "Download Excel",
-  "listing.export_title": "Export listing to Excel (.xlsx)",
+  "listing.export_button": "Generate Excel listing",
+  "listing.export_title": "Generate an Excel file with the listing in the output/ folder",
+  "listing.export_success_title": "File generated in output/",
 
   "rename.breadcrumb.home": "Home",
   "rename.step_badge": "Step 2 of 3",

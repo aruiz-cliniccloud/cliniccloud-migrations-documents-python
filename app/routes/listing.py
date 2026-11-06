@@ -1,7 +1,7 @@
 from datetime import datetime
 from pathlib import Path
 
-from flask import Blueprint, Response, render_template, redirect, request, current_app
+from flask import Blueprint, render_template, redirect, request, current_app
 
 from app.services.document_lister import DocumentLister
 from app.services.excel_exporter import generate_excel
@@ -38,10 +38,11 @@ def index():
     total = len(all_documents)
     limited = not show_all and total > _DEFAULT_LIMIT
     documents = all_documents if show_all else all_documents[:_DEFAULT_LIMIT]
+    exported = request.args.get("exported")
 
     return render_template("listing.html", path=path_str, documents=documents,
                            error=None, default_dir=default_dir,
-                           total=total, limited=limited)
+                           total=total, limited=limited, exported=exported)
 
 
 @listing_bp.get("/documents/export")
@@ -66,8 +67,4 @@ def export():
     filename = f"documents_{timestamp}.xlsx"
     (output_dir / filename).write_bytes(excel_bytes)
 
-    return Response(
-        excel_bytes,
-        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        headers={"Content-Disposition": f"attachment; filename={filename}"},
-    )
+    return redirect(f"/documents?path={path_str}&exported={filename}")

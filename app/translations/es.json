@@ -86,8 +86,9 @@
   "listing.initial.title": "Introduce una ruta para comenzar",
   "listing.initial.description": "Escribe o pega la ruta completa de tu carpeta de documentos y pulsa Explorar.",
   "listing.no_filter_results": "Ningún documento coincide con el filtro.",
-  "listing.export_button": "Descargar Excel",
-  "listing.export_title": "Exportar listado a Excel (.xlsx)",
+  "listing.export_button": "Generar listado en Excel",
+  "listing.export_title": "Genera un fichero Excel con el listado en la carpeta output/",
+  "listing.export_success_title": "Fichero generado en output/",
 
   "rename.breadcrumb.home": "Inicio",
   "rename.step_badge": "Paso 2 de 3",
