@@ -126,14 +126,6 @@
             </a>
           </span>
         {% endif %}
-        <a href="/documents/export?path={{ path }}"
-           title="{{ t('listing.export_title') }}"
-           class="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-green-700 bg-green-50 border border-green-200 rounded-full hover:bg-green-100 hover:border-green-300 transition">
-          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/>
-          </svg>
-          {{ t("listing.export_button") }}
-        </a>
       </div>
       <div class="relative">
         <div class="absolute inset-y-0 left-0 flex items-center pl-2.5 pointer-events-none text-gray-400">
@@ -202,6 +194,18 @@
     <p id="no-filter-results" class="hidden mt-6 text-center text-sm text-gray-400 py-8">
       {{ t("listing.no_filter_results") }}
     </p>
+
+    <!-- Export button -->
+    <div class="mt-5 flex justify-end">
+      <a href="/documents/export?path={{ path }}"
+         title="{{ t('listing.export_title') }}"
+         class="inline-flex items-center gap-2.5 px-5 py-3 text-sm font-semibold text-white bg-green-600 rounded-xl hover:bg-green-700 active:bg-green-800 shadow-sm hover:shadow transition">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/>
+        </svg>
+        {{ t("listing.export_button") }}
+      </a>
+    </div>
 
   {% else %}
     <!-- Empty state -->
