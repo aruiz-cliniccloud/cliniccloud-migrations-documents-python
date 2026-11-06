@@ -6,7 +6,7 @@ from app.infrastructure.manifest_csv_writer import write_package_manifest
 
 class TestWritePackageManifest:
     def test_creates_csv_in_output_dir(self, tmp_path):
-        rows = [{"idImport": "1", "paquete": "paquete_123_01"}]
+        rows = [{"idImport": "1", "Ruta": "paquete_123_01"}]
         path = write_package_manifest(tmp_path, "123", rows)
         assert path == tmp_path / "manifest_123.csv"
         assert path.exists()
@@ -15,10 +15,10 @@ class TestWritePackageManifest:
         write_package_manifest(tmp_path, "123", [])
         with (tmp_path / "manifest_123.csv").open(newline="") as f:
             reader = csv.DictReader(f, delimiter=";")
-            assert reader.fieldnames == ["idImport", "paquete"]
+            assert reader.fieldnames == ["idImport", "Ruta"]
 
     def test_csv_uses_semicolon_delimiter(self, tmp_path):
-        rows = [{"idImport": "1", "paquete": "paquete_123_01"}]
+        rows = [{"idImport": "1", "Ruta": "paquete_123_01"}]
         write_package_manifest(tmp_path, "123", rows)
         with (tmp_path / "manifest_123.csv").open(newline="") as f:
             first_line = f.readline()
@@ -27,15 +27,15 @@ class TestWritePackageManifest:
 
     def test_csv_contains_all_rows(self, tmp_path):
         rows = [
-            {"idImport": "1", "paquete": "paquete_123_01"},
-            {"idImport": "2", "paquete": "paquete_123_01"},
-            {"idImport": "3", "paquete": "paquete_123_02"},
+            {"idImport": "1", "Ruta": "paquete_123_01"},
+            {"idImport": "2", "Ruta": "paquete_123_01"},
+            {"idImport": "3", "Ruta": "paquete_123_02"},
         ]
         write_package_manifest(tmp_path, "123", rows)
         with (tmp_path / "manifest_123.csv").open(newline="") as f:
             written = list(csv.DictReader(f, delimiter=";"))
         assert len(written) == 3
-        assert written[2]["paquete"] == "paquete_123_02"
+        assert written[2]["Ruta"] == "paquete_123_02"
 
     def test_creates_output_dir_if_missing(self, tmp_path):
         new_dir = tmp_path / "sub" / "output"

@@ -263,7 +263,7 @@ def apply():
                     raise FileNotFoundError(f"File not found: {pf.source_path}")
                 shutil.copy2(pf.source_path, dest)
                 files_copied += 1
-                manifest_rows.append({"idImport": pf.id_import, "paquete": f"{folder_name}/{pf.source_path.name}"})
+                manifest_rows.append({"idImport": pf.id_import, "Ruta": f"{folder_name}/{pf.source_path.name}"})
                 logger.info("Copied: %s → %s/%s", pf.source_path.name, folder_name, pf.source_path.name)
             except (FileNotFoundError, OSError) as exc:
                 files_error += 1
